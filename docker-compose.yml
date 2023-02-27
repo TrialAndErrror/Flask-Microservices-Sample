@@ -61,14 +61,27 @@ services:
     image: postgres
     restart: always
     ports:
-      - 5454:5454
+      - "${TEMPERATURE_DB_PORT}:5454"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=pair
-      - POSTGRES_PORT=5454
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB=temperature_db
+      - POSTGRES_PORT
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/temperature_data
+  feeding_calc_db:
+    image: postgres
+    restart: always
+    ports:
+      - "${FEEDING_CALC_DB_PORT}:5454"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB=feeding_calc_db
+      - POSTGRES_PORT
+    volumes:
+      - feeding_calc_data:/var/lib/postgresql/feeding_calc_data
 
 volumes:
   postgres_data:
+  feeding_calc_data:

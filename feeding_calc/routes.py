@@ -5,6 +5,7 @@ import os
 from feeding_calc import app, db
 from feeding_calc.models.VolumeRequest import VolumeRequest
 from feeding_calc.models.NutramigenCalculation import NutramigenCalculation
+from flask_cors import cross_origin
 
 load_dotenv(dotenv_path=".env")
 
@@ -52,8 +53,16 @@ def save_calculation(calorie_density: int, total_volume: int):
     return calculation
 
 
+@app.route("/data", methods=['GET'])
+@cross_origin()
+def get_data():
+    reports = [item.serialize() for item in NutramigenCalculation.query.all()]
+    response = jsonify(reports)
+    return response
+
+
 @app.route('/', methods=['GET', 'POST', 'DELETE'])
-def allData():
+def all_data():
     if request.method == 'POST':
         if request.form.get("_method") == "DELETE":
             # Delete all NutramigenCalculation entries
