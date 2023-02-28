@@ -27,19 +27,35 @@ services:
       context: feeding_calc
       dockerfile: Dockerfile
     command: [ "gunicorn", "--bind", ":8000", "--reload", "feeding_calc.wsgi:app" ]
+    restart: always       # Included because it can crash if it fails to connect to DB
     ports:
       - "${FEEDING_CALC_PORT}:8000"
     volumes:
       - ./feeding_calc:/app/feeding_calc
+    depends_on:
+      - feeding_calc_db
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB=feeding_calc_db
+      - POSTGRES_PORT=5432
   temperature:
     build:
       context: temperature
       dockerfile: Dockerfile
     command: [ "gunicorn", "--bind", ":8000", "--reload", "temperature.wsgi:app" ]
+    restart: always       # Included because it can crash if it fails to connect to DB
     ports:
       - "${TEMPERATURE_PORT}:8000"
     volumes:
       - ./temperature:/app/temperature
+    depends_on:
+      - temperature_db
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB=temperature_db
+      - POSTGRES_PORT=5432
   frontend:
     build:
       context: react-frontend
@@ -60,25 +76,27 @@ services:
   temperature_db:
     image: postgres
     restart: always
-    ports:
-      - "${TEMPERATURE_DB_PORT}:5454"
+    expose:
+      - "5432"
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB=temperature_db
-      - POSTGRES_PORT
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5432"]
     volumes:
       - postgres_data:/var/lib/postgresql/temperature_data
   feeding_calc_db:
     image: postgres
     restart: always
-    ports:
-      - "${FEEDING_CALC_DB_PORT}:5454"
+    expose:
+      - "5432"
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB=feeding_calc_db
-      - POSTGRES_PORT
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5432"]
     volumes:
       - feeding_calc_data:/var/lib/postgresql/feeding_calc_data
 

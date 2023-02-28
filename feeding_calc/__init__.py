@@ -13,10 +13,10 @@ def get_env_variables():
     pg_host = os.environ.get('POSTGRES_DB')
     pg_port = os.environ.get('POSTGRES_PORT')
 
-    if pg_user == "":
+    if not pg_user or pg_user == "":
         raise EnvironmentError('PG User Not Set')
 
-    if pg_pass == "":
+    if not pg_pass or pg_pass == "":
         raise EnvironmentError('PG Password Not Set')
 
     if not pg_host or pg_host == "":
