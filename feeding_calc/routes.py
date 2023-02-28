@@ -14,7 +14,7 @@ with app.app_context():
     db.create_all()
 
 
-def save_volume_request(calories, volume):
+def save_volume_request(calories: int, volume: int):
     if not calories:
         return dict(
             message='Missing Calorie Density',
@@ -56,7 +56,10 @@ def save_calculation(calorie_density: int, total_volume: int):
 @app.route("/data", methods=['GET'])
 @cross_origin()
 def get_data():
-    reports = [item.serialize() for item in NutramigenCalculation.query.all()]
+    query = NutramigenCalculation.query.order_by(
+        NutramigenCalculation.created_at.desc()
+    )
+    reports = [item.serialize() for item in query.all()]
     response = jsonify(reports)
     return response
 
@@ -106,8 +109,8 @@ def receive_command():
             # Get the JSON data from the request body
             data = request.get_json()
 
-            calories = data['calories']
-            volume = data['volume']
+            calories = int(data['calories'])
+            volume = int(data['volume'])
 
             # Create a new Command object and save it to the database
             save_request = save_volume_request(

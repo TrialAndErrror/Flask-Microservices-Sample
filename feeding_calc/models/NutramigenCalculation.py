@@ -3,7 +3,6 @@ import datetime
 from decimal import Context
 import math
 
-
 STANDARD_SCOOP_RATIO = Context(prec=20).create_decimal(f'{1 / 60}')
 
 
@@ -19,8 +18,8 @@ class NutramigenCalculation(db.Model):
 
     def __init__(self, calorie_density, total_volume):
         super().__init__()
-        self.calorie_density = calorie_density
-        self.total_volume = total_volume
+        self.calorie_density = int(calorie_density)
+        self.total_volume = int(total_volume)
 
         # Calculate the amount of Nutramigen needed based on the calorie density and total volume
         result = calculate_scoops(
@@ -31,6 +30,15 @@ class NutramigenCalculation(db.Model):
         self.nutramigen_scoops = result['scoops']
         self.nutramigen_grams = result['grams']
         self.volume_water = f'{result["input_water"]:.2f}'
+
+    def serialize(self):
+        return {
+            "calorie_density": self.calorie_density,
+            "total_volume": self.total_volume,
+            "nutramigen_scoops": self.nutramigen_scoops,
+            "nutramigen_grams": self.nutramigen_grams,
+            "volume_water": self.volume_water
+        }
 
 
 def calculate_scoops(output_volume, calorie_density):
@@ -52,5 +60,3 @@ def calculate_scoops(output_volume, calorie_density):
         "grams": num_scoops * grams_per_scoop,
         "input_water": input_water
     }
-
-

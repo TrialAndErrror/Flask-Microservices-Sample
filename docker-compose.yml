@@ -60,8 +60,10 @@ services:
     build:
       context: react-frontend
       dockerfile: Dockerfile
-      args:
-        VITE_TEMPERATURE_ENDPOINT: "http://${LOCAL_IP}:${TEMPERATURE_PORT}/data"
+    depends_on:
+      - temperature
+      - feeding_calc
+    restart: always
     ports:
       - "${FRONTEND_PORT}:3000"
     volumes:

@@ -4,6 +4,7 @@ from flask import request, render_template, jsonify
 
 from handler.models.command import Command
 from . import app, db
+from flask_cors import cross_origin
 
 
 # Create the database tables if they don't already exist
@@ -25,6 +26,7 @@ def send_message_and_receive_response(data, service: str):
 
 # Set up a route to receive POST requests at the /commands endpoint
 @app.route('/', methods=['GET', 'POST'])
+@cross_origin()
 def receive_command():
     """ Receive command and dispatch accordingly"""
 

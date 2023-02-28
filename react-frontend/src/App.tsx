@@ -1,4 +1,5 @@
 import TemperatureScreen from "./components/TemperaturePage/Screen";
+import FeedingCalcScreen from "./components/FeedingCalcPage/Screen";
 import "./index.less"
 import { useState } from "react";
 import { Container, Footer } from "rsuite";
@@ -8,7 +9,7 @@ import { useMediaQuery } from "react-responsive";
 function App() {
     const [currentPage, setCurrentPage] = useState('temperature')
 
-    const isMobileSize = useMediaQuery({ query: '(max-width: 1224px)' })
+    const isTabletOrMobile = useMediaQuery({query: '(max-width: 1224px)'})
 
     const temperatureEndpoint = import.meta.env.VITE_TEMPERATURE_ENDPOINT
 
@@ -20,12 +21,14 @@ function App() {
 
     return (
         <div className="bg rs-theme-dark">
-            <NavMenu />
+            <NavMenu active={currentPage} setActive={setCurrentPage}/>
             <Container>
-                {currentPage === "temperature" && <TemperatureScreen {...temperatureProps} />}
+                {currentPage === "temperature" && <TemperatureScreen smallSize={isTabletOrMobile}/>}
+                {currentPage === "calc" && <FeedingCalcScreen smallSize={isTabletOrMobile}/>}
+
             </Container>
             <Container>
-                <Footer><br /></Footer>
+                <Footer><br/></Footer>
             </Container>
         </div>
     );

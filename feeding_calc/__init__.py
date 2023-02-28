@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+
 import os
 
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
-
+CORS(app)
 
 # Set up a database connection
 def get_env_variables():
