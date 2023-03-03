@@ -66,6 +66,8 @@ services:
     restart: always
     ports:
       - "${FRONTEND_PORT}:3000"
+    environment:
+      - "VITE_API_URL=${LOCAL_IP}"
     volumes:
       - ./react-frontend:/app/react-frontend
   nginx:

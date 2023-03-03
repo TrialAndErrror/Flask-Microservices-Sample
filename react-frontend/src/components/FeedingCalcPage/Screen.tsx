@@ -21,7 +21,7 @@ dayjs.tz.setDefault("America/New_York")
 
 
 const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
-    const endpoint = "http://192.168.1.183:55003/data"
+    const endpoint = "http://127.0.0.1:55003/data"
 
     const requestTriggerValue = useTrigger(requestTrigger);
     const {data, isLoading} = useFetch<DataType[]>(endpoint, {depends: [requestTriggerValue]})
@@ -33,7 +33,7 @@ const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
             <Container>
                 <div className="container">
                     <MobileForm
-                        endpoint={"http://192.168.1.183:55001"}
+                        endpoint={endpoint}
 
                         updateFunc={() => requestTrigger()}
                     />
@@ -61,7 +61,7 @@ const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
                 <Container>
                     <div className="container-mobile">
                         <MobileForm
-                            endpoint={"http://192.168.1.183:55001"}
+                            endpoint={endpoint}
                             updateFunc={() => requestTrigger()}
                         />
                     </div>
@@ -79,7 +79,7 @@ const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
                 <div className="container">
 
                     <MobileForm
-                        endpoint={"192.168.1.183:55001"}
+                        endpoint={endpoint}
                         updateFunc={() => requestTrigger()}
                     />
                 </div>

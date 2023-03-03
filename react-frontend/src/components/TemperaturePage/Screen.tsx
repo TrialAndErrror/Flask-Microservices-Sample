@@ -20,10 +20,9 @@ function formatMobileDate(date: Date): string {
     return `${day} ${time}`
 }
 
-type TemperaturescreenProps = {
-    mobileScreenSize: boolean,
-    temperatureEndpoint: string
-}
+const TemperatureScreen = ({smallSize}: { smallSize: boolean }) => {
+    const endpoint = "http://127.0.0.1:55004/data"
+    const {data, isLoading} = useFetch<DataType[]>(endpoint)
 
 const TemperatureScreen = ({ mobileScreenSize, temperatureEndpoint }: TemperaturescreenProps) => {
     const { data, isLoading } = useFetch<DataType[]>(temperatureEndpoint)
