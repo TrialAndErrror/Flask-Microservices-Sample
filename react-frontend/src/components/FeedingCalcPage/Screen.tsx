@@ -1,7 +1,6 @@
-import {Container, Content, Divider, Panel} from "rsuite";
+import {Container, Panel} from "rsuite";
 import useFetch from "react-fetch-hook";
 import dayjs from "dayjs";
-import {useMediaQuery} from 'react-responsive'
 
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'
@@ -20,12 +19,11 @@ dayjs.extend(timezone)
 dayjs.tz.setDefault("America/New_York")
 
 
-const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
+export const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
     const endpoint = "http://127.0.0.1:55003/data"
 
     const requestTriggerValue = useTrigger(requestTrigger);
     const {data, isLoading} = useFetch<DataType[]>(endpoint, {depends: [requestTriggerValue]})
-    console.log(data)
     if (isLoading) return <Panel header="Loading Feeding Calc Data" bordered className="card-wide bg-light"/>
 
     if (!data || data.length === 0) {
@@ -34,7 +32,6 @@ const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
                 <div className="container">
                     <MobileForm
                         endpoint={endpoint}
-
                         updateFunc={() => requestTrigger()}
                     />
                 </div>
@@ -77,7 +74,6 @@ const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
         <>
             <Container>
                 <div className="container">
-
                     <MobileForm
                         endpoint={endpoint}
                         updateFunc={() => requestTrigger()}
@@ -89,9 +85,4 @@ const FeedingCalcScreen = ({smallSize}: { smallSize: boolean }) => {
             </Container>
         </>
     )
-}
-
-export {
-    FeedingCalcScreen as
-        default
 }

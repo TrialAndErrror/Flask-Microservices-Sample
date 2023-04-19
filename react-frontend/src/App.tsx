@@ -1,5 +1,5 @@
-import TemperatureScreen from "./components/TemperaturePage/Screen";
-import FeedingCalcScreen from "./components/FeedingCalcPage/Screen";
+import {TemperatureScreen} from "./components/TemperaturePage/Screen";
+import {FeedingCalcScreen} from "./components/FeedingCalcPage/Screen";
 import "./index.less"
 import { useState } from "react";
 import { Container, Footer } from "rsuite";
@@ -13,12 +13,7 @@ function App() {
     console.log(import.meta.env.VITE_API_URL)
 
     const temperatureEndpoint = import.meta.env.VITE_TEMPERATURE_ENDPOINT
-
     console.log(temperatureEndpoint)
-    const temperatureProps = {
-        mobileScreenSize: isMobileSize,
-        temperatureEndpoint
-    }
 
     return (
         <div className="bg rs-theme-dark">

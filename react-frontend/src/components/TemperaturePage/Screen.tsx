@@ -1,8 +1,8 @@
 import EntriesTable from "./EntriesTable";
-import { Container, Panel } from "rsuite";
+import {Container, Panel} from "rsuite";
 import EntriesChart from "./EntriesChart";
 import useFetch from "react-fetch-hook";
-import { DataType, FormattedDataType } from "./types";
+import {DataType, FormattedDataType} from "./types";
 import dayjs from "dayjs";
 
 import utc from 'dayjs/plugin/utc';
@@ -20,14 +20,15 @@ function formatMobileDate(date: Date): string {
     return `${day} ${time}`
 }
 
-const TemperatureScreen = ({smallSize}: { smallSize: boolean }) => {
-    const endpoint = "http://127.0.0.1:55004/data"
+type TemperaturescreenProps = {
+    smallSize: boolean
+}
+export const TemperatureScreen = ({smallSize}: TemperaturescreenProps) => {
+    const endpoint = "http://127.0.0.1:55004"
+
     const {data, isLoading} = useFetch<DataType[]>(endpoint)
 
-const TemperatureScreen = ({ mobileScreenSize, temperatureEndpoint }: TemperaturescreenProps) => {
-    const { data, isLoading } = useFetch<DataType[]>(temperatureEndpoint)
-
-    if (isLoading) return <Panel header="Loading Temperature Data" bordered className="card-wide bg-light" />
+    if (isLoading) return <Panel header="Loading Temperature Data" bordered className="card-wide bg-light"/>
 
     if (!data || data.length === 0) {
         return (
@@ -42,7 +43,7 @@ const TemperatureScreen = ({ mobileScreenSize, temperatureEndpoint }: Temperatur
     }
 
     const formattedData: FormattedDataType[] = data.map((entry) => {
-        const dateObject = dayjs(entry.created_at, { utc: true }).toDate()
+        const dateObject = dayjs(entry.created_at, {utc: true}).toDate()
         return {
             ...entry,
             created_at: dateObject,
@@ -51,26 +52,35 @@ const TemperatureScreen = ({ mobileScreenSize, temperatureEndpoint }: Temperatur
         }
     })
 
-    if (mobileScreenSize) {
+    if (smallSize) {
         const lastElement = formattedData.slice(-1)[0]
         return (
             <>
                 <Container>
                     <div className="container-mobile">
                         <Panel header="Current Data" bordered className="card-wide bg-dark">
-                            <div style={{ display: "flex" }}>
-                                <p style={{ width: "50%", textAlign: "center", fontSize: "24px" }}>Temp: <br />{lastElement.temperature}</p>
-                                <p style={{ width: "50%", textAlign: "center", fontSize: "24px", marginTop: 0 }}>Humidity: <br />{lastElement.humidity} %</p>
+                            <div style={{display: "flex"}}>
+                                <p style={{
+                                    width: "50%",
+                                    textAlign: "center",
+                                    fontSize: "24px"
+                                }}>Temp: <br/>{lastElement.temperature}</p>
+                                <p style={{
+                                    width: "50%",
+                                    textAlign: "center",
+                                    fontSize: "24px",
+                                    marginTop: 0
+                                }}>Humidity: <br/>{lastElement.humidity} %</p>
                             </div>
                         </Panel>
                     </div>
                 </Container>
                 <Container>
-                    <MobileChart data={formattedData} />
+                    <MobileChart data={formattedData}/>
                 </Container>
                 <Container>
                     <div className="container-mobile">
-                        <MobileTable data={formattedData} />
+                        <MobileTable data={formattedData}/>
                     </div>
                 </Container>
             </>
@@ -81,19 +91,14 @@ const TemperatureScreen = ({ mobileScreenSize, temperatureEndpoint }: Temperatur
         <>
             <Container>
                 <div className="container">
-                    <EntriesChart data={formattedData} />
+                    <EntriesChart data={formattedData}/>
                 </div>
             </Container>
             <Container>
                 <div className="container">
-                    <EntriesTable data={formattedData} />
+                    <EntriesTable data={formattedData}/>
                 </div>
             </Container>
         </>
     )
-}
-
-export {
-    TemperatureScreen as
-        default
 }
