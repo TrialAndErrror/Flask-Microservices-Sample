@@ -40,16 +40,16 @@ services:
       - "${TEMPERATURE_PORT}:8000"
     volumes:
       - ./temperature:/app/temperature
-  frontend:
-    build:
-      context: react-frontend
-      dockerfile: Dockerfile
-      args:
-        VITE_TEMPERATURE_ENDPOINT: "http://${LOCAL_IP}:${TEMPERATURE_PORT}/data"
-    ports:
-      - "${FRONTEND_PORT}:3000"
-    volumes:
-      - ./react-frontend:/app/react-frontend
+#  frontend:
+#    build:
+#      context: react-frontend
+#      dockerfile: Dockerfile
+#      args:
+#        VITE_TEMPERATURE_ENDPOINT: "http://${LOCAL_IP}:${TEMPERATURE_PORT}/data"
+#    ports:
+#      - "${FRONTEND_PORT}:3000"
+#    volumes:
+#      - ./react-frontend:/app/react-frontend
   nginx:
     build: ./nginx
     ports:

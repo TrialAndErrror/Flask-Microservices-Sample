@@ -21,7 +21,7 @@ def create_app():
         }
     })
 
-    app = Flask(__name__, template_folder="templates")
+    app = Flask(__name__, template_folder="templates", static_folder="static")
 
     # Set up a database connection
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/commands.db'
