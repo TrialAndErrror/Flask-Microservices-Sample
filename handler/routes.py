@@ -22,11 +22,46 @@ def send_message_and_receive_response(data, service: str):
     else:
         return jsonify(response_data)
 
+
 # Set up a route to receive POST requests at the /commands endpoint
 @app.route('/api', methods=['POST'])
 def receive_api_request():
+    """ Receive an API request and dispatch accordingly"""
 
-    pass
+    """
+        Command Format:
+        {
+            'source': 'frontend'
+            'data': {}
+        }
+        
+        Frontend Data:
+            {
+                'name': str
+                'params': dict or None
+            }
+    """
+    if request.method == 'POST':
+        # Get the JSON data from the request body
+        json_data = request.get_json()
+
+        # Access the data as a dictionary
+        request_source = json_data.get('source')
+        data = json_data.get('data')
+
+        if request_source == "frontend":
+            target_service = data.get("name")
+            params = data.get("params")
+
+            endpoint = f'http://{target_service}:8000/api'
+            response = requests.post(url=endpoint, json=params)
+
+            response_data = response.json()
+
+            if response_data.get('success'):
+                return jsonify(response_data)
+            else:
+                return jsonify(response_data)
 
 
 # Set up a route to receive POST requests at the /commands endpoint
@@ -54,11 +89,7 @@ def receive_command():
             'name': str
         }
         
-    Frontend Data:
-        {
-            'name': str
-            'params': dict or None
-        }
+
     """
 
     if request.method == 'POST':
