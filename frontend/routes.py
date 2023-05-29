@@ -5,9 +5,14 @@ from flask import request, render_template, jsonify
 from . import app
 
 
-def send_message_and_receive_response(data, service: str):
-    endpoint = f'http://{service}:8000/message'
-    response = requests.post(url=endpoint, json=data)
+def send_message_and_receive_response(data_category, parameters: dict or None):
+    endpoint = f'http://handler:8000/message'
+    message = {
+        "service_name": data_category,
+        "params": parameters
+    }
+
+    response = requests.post(url=endpoint, json=message)
 
     response_data = response.json()
 
@@ -25,28 +30,10 @@ def receive_command():
     """
     Command Format:
         {
-            'command': 'calc' | 'journal'
-            'data': {}
+            'name': ''
+            'parameters': {} or None
         }
         
-    Calc Data:
-        {
-            'calories': float
-            'volume': float
-        }
-        
-    Journal Data:
-        {
-            'entry_type': str
-            'amount': float
-            'name': str
-        }
-        
-    Temperature Data:
-        {
-            'temperature': float
-            'humidity': str
-        }
     """
 
     if request.method == 'POST':
@@ -54,10 +41,9 @@ def receive_command():
         json_data = request.get_json()
 
         # Access the data as a dictionary
-        command = json_data.get('command')
-        data = json_data.get('data')
-
-        return send_message_and_receive_response(data, command)
+        data_category = json_data.get('name')
+        parameters = json_data.get('parameters')
+        return send_message_and_receive_response(data_category, parameters)
     else:
         # Get all commands from the database
         # commands = Command.query.all()

@@ -22,6 +22,12 @@ def send_message_and_receive_response(data, service: str):
     else:
         return jsonify(response_data)
 
+# Set up a route to receive POST requests at the /commands endpoint
+@app.route('/api', methods=['POST'])
+def receive_api_request():
+
+    pass
+
 
 # Set up a route to receive POST requests at the /commands endpoint
 @app.route('/', methods=['GET', 'POST'])
@@ -31,7 +37,7 @@ def receive_command():
     """
     Command Format:
         {
-            'command': 'calc' | 'journal'
+            'command': 'calc' | 'journal' | 'frontend'
             'data': {}
         }
         
@@ -48,10 +54,10 @@ def receive_command():
             'name': str
         }
         
-    Temperature Data:
+    Frontend Data:
         {
-            'temperature': float
-            'humidity': str
+            'name': str
+            'params': dict or None
         }
     """
 
