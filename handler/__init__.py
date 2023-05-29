@@ -1,10 +1,9 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
 from logging.config import dictConfig
 
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
-def create_app():
+def default_app_factory():
     dictConfig({
         'version': 1,
         'formatters': {'default': {
@@ -23,12 +22,11 @@ def create_app():
 
     app = Flask(__name__, template_folder="templates", static_folder="static")
 
-    # Set up a database connection
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/commands.db'
-
-    db = SQLAlchemy(app)
-
-    return app, db
+    return app
 
 
-app, db = create_app()
+app = default_app_factory()
+
+# Set up a database connection
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/commands.db'
+db = SQLAlchemy(app)

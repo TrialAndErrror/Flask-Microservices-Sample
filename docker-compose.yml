@@ -31,6 +31,7 @@ services:
       - "${FEEDING_CALC_PORT}:8000"
     volumes:
       - ./feeding_calc:/app/feeding_calc
+      - ./common:/app/journal
   temperature:
     build:
       context: temperature
@@ -40,7 +41,8 @@ services:
       - "${TEMPERATURE_PORT}:8000"
     volumes:
       - ./temperature:/app/temperature
-#  frontend:
+
+  #  frontend:
 #    build:
 #      context: react-frontend
 #      dockerfile: Dockerfile
