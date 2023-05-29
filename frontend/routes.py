@@ -6,11 +6,17 @@ from . import app
 
 
 def send_message_and_receive_response(data_category, parameters: dict or None):
-    endpoint = f'http://handler:8000/message'
-    message = {
-        "service_name": data_category,
+    endpoint = f'http://handler:8000/api'
+
+    message_data = {
+        "name": data_category,
         "params": parameters
     }
+
+    message = dict(
+        source="frontend",
+        data=message_data
+    )
 
     response = requests.post(url=endpoint, json=message)
 
