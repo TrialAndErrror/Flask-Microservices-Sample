@@ -93,6 +93,20 @@ def water():
     return render_template('water.html', waters=waters)
 
 
+@app.route('/api', methods=['POST'])
+def api_request():
+    if request.method == 'POST':
+        json_data = request.get_json()
+        # Currently params are unused, returning all data for debug purposes
+        parameters = json_data.get('params')
+
+        all_data = {
+            "food": Food.query.all(),
+            "water": Water.query.all()
+        }
+        return jsonify(all_data)
+
+
 def run_app():
     port = os.environ.get("JOURNAL_PORT")
     debug = os.environ.get("DEBUG")

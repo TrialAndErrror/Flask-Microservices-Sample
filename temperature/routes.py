@@ -73,6 +73,15 @@ def receive_message():
         return jsonify(response)
 
 
+@app.route('/api', methods=['POST'])
+def api_request():
+    if request.method == 'POST':
+        json_data = request.get_json()
+        # Currently params are unused, returning all data for debug purposes
+        parameters = json_data.get('params')
+        return jsonify(Report.query.all())
+
+
 def run_app():
     port = os.environ.get("TEMPERATURE_PORT")
     debug = os.environ.get("DEBUG")
