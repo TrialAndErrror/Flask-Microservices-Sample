@@ -1,3 +1,29 @@
-<table>
+<div class="col-md-6 col-12 wow fadeInUp" data-wow-delay=".4s">
+    {% if data|length == 0 %}
+        <div class="error-content">
+            <h1>No data found!</h1>
+        </div>
+    {% else %}
+        <div class="single-table">
+            <div class="table-head">
+                <div class="row">
+                    <div class="col-6">Time</div>
+                    <div class="col-6">Temperature</div>
+                </div>
+            </div>
+            <div class="table-content">
+                <ul class="table-list">
+                    {% for entry in data %}
+                        <li>
+                            <div class="row">
+                                <div class="col-6">{{ entry.time }}</div>
+                                <div class="col-6">{{ entry.temperature }}</div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
 
-</table>
+            </div>
+        </div>
+    {% endif %}
+</div>

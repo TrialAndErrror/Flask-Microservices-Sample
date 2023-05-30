@@ -1,7 +1,7 @@
 import datetime
 import os
 import requests
-from flask import request, render_template, jsonify
+from flask import request, render_template, jsonify, abort
 
 from . import app
 from flask_htmx import HTMX
@@ -10,7 +10,10 @@ from flask_htmx import HTMX
 htmx = HTMX(app)
 
 
-def send_message_and_receive_response(data_category, parameters: dict or None):
+def send_message_and_receive_response(data_category, parameters: dict or None = None):
+    if parameters is None:
+        parameters = {}
+
     endpoint = f'http://handler:8000/api'
 
     message_data = {
@@ -52,7 +55,21 @@ ImportError: libstdc++.so.6: cannot open shared object file: No such file or dir
 #
 #         # Pass the file path to the template
 #         return render_template('services/temperature/chart.html', chart_file=chart_file)
-#     return {}, 405
+#     abort(405)
+
+
+@app.route("/temperature", methods=['GET', 'POST'])
+def temperature_dashboard():
+    chart_src = "https://trialanderrror.com/images/wade/wade.webp"
+    # data = send_message_and_receive_response("temperature")
+    data = []
+
+    return render_template(
+        "services/temperature/dashboard.html",
+        data=data,
+        chart_file=chart_src
+    )
+
 
 
 # Set up a route to receive POST requests at the /commands endpoint
