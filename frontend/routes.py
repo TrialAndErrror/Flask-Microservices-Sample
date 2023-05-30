@@ -2,7 +2,6 @@ import datetime
 import os
 import requests
 from flask import request, render_template, jsonify
-import matplotlib.pyplot as plt
 
 from . import app
 from flask_htmx import HTMX
