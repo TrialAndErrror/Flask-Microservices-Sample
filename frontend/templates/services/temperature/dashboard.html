@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+
+{% block breadcrumbs %}
+    <h1 class="page-title">Dev Box</h1>
+    <ul class="breadcrumb-nav">
+        <li>Home</li>
+        <li>Temperature Sensor</li>
+    </ul>
+{% endblock %}
+
+
+{% block content %}
+    <div class="contact-us section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    {% include "services/temperature/table.html" %}
+                </div>
+                <div class="col-lg-6 col-12">
+                    {% include "services/temperature/chart.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
