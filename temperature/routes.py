@@ -79,7 +79,10 @@ def api_request():
         json_data = request.get_json()
         # Currently params are unused, returning all data for debug purposes
         parameters = json_data.get('params')
-        return jsonify(Report.query.all())
+        return jsonify({
+            "success": True,
+            "data": Report.query.all()
+        })
 
 
 def run_app():

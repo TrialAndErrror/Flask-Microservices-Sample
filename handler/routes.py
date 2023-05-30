@@ -51,9 +51,12 @@ def receive_api_request():
 
         if request_source == "frontend":
             target_service = data.get("name")
-            params = data.get("params")
+            params = {}
+            if request_params := data.get("params"):
+                params.update(request_params)
 
             endpoint = f'http://{target_service}:8000/api'
+
             response = requests.post(url=endpoint, json=params)
 
             response_data = response.json()
@@ -72,7 +75,7 @@ def receive_command():
     """
     Command Format:
         {
-            'command': 'calc' | 'journal' | 'frontend'
+            'command': 'calc' | 'journal'
             'data': {}
         }
         
