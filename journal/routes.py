@@ -104,7 +104,10 @@ def api_request():
             "food": Food.query.all(),
             "water": Water.query.all()
         }
-        return jsonify(all_data)
+        return jsonify({
+            "success": True,
+            "data": all_data
+        })
 
 
 def run_app():
