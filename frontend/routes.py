@@ -56,7 +56,7 @@ def receive_command():
 
         # Render the template with the commands
         # return render_template('commands.html', commands=commands)
-        return render_template('commands.html')
+        return render_template('home.html')
 
 
 def run_app():
