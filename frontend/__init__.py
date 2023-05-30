@@ -1,9 +1,5 @@
 from logging.config import dictConfig
-
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
 
 
 def default_app_factory():
@@ -29,8 +25,3 @@ def default_app_factory():
 
 
 app = default_app_factory()
-
-# Set up a database connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/feeding_calc.db'
-
-db.init_app(app)

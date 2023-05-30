@@ -2,6 +2,7 @@ FROM python:3.11
 
 WORKDIR /app
 
+# TODO: SEe if we can cut datetime out of docker
 RUN echo "America/New_York" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 

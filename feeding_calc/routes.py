@@ -128,6 +128,18 @@ def receive_command():
     return render_template('requests.html', volume_requests=volume_requests)
 
 
+@app.route('/api', methods=['POST'])
+def api_request():
+    if request.method == 'POST':
+        json_data = request.get_json()
+        # Currently params are unused, returning all data for debug purposes
+        parameters = json_data.get('params')
+        return jsonify({
+            "success": True,
+            "data": NutramigenCalculation.query.all()
+        })
+
+
 def run_app():
     port = os.environ.get("FEEDING_CALC_PORT")
     debug = os.environ.get("DEBUG")

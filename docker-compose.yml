@@ -42,14 +42,25 @@ services:
       - ./temperature:/app/temperature
   frontend:
     build:
-      context: react-frontend
+      context: frontend
       dockerfile: Dockerfile
-      args:
-        VITE_TEMPERATURE_ENDPOINT: "http://${LOCAL_IP}:${TEMPERATURE_PORT}/data"
+    command: [ "gunicorn", "--bind", ":8000", "--reload", "frontend.wsgi:app" ]
     ports:
-      - "${FRONTEND_PORT}:3000"
+      - "${FRONTEND_PORT}:8000"
     volumes:
-      - ./react-frontend:/app/react-frontend
+      - ./frontend:/app/frontend
+
+
+  #  frontend:
+#    build:
+#      context: react-frontend
+#      dockerfile: Dockerfile
+#      args:
+#        VITE_TEMPERATURE_ENDPOINT: "http://${LOCAL_IP}:${TEMPERATURE_PORT}/data"
+#    ports:
+#      - "${FRONTEND_PORT}:3000"
+#    volumes:
+#      - ./react-frontend:/app/react-frontend
   nginx:
     build: ./nginx
     ports:
