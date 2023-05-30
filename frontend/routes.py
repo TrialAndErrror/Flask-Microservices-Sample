@@ -10,6 +10,9 @@ from flask_htmx import HTMX
 htmx = HTMX(app)
 
 
+NO_DATA_CHART_IMAGE = "https://user-images.githubusercontent.com/15953522/49493502-63e21d00-f882-11e8-911c-1d7655f393e8.png"
+
+
 def send_message_and_receive_response(data_category, parameters: dict or None = None):
     if parameters is None:
         parameters = {}
@@ -60,16 +63,20 @@ ImportError: libstdc++.so.6: cannot open shared object file: No such file or dir
 
 @app.route("/temperature", methods=['GET', 'POST'])
 def temperature_dashboard():
-    chart_src = "https://trialanderrror.com/images/wade/wade.webp"
-    # data = send_message_and_receive_response("temperature")
-    data = []
+    failed = False
+
+    try:
+        data = send_message_and_receive_response("temperature")
+    except requests.exceptions.ConnectionError:
+        data = []
+        failed = True
 
     return render_template(
         "services/temperature/dashboard.html",
         data=data,
-        chart_file=chart_src
+        chart_file=NO_DATA_CHART_IMAGE,
+        failed=failed
     )
-
 
 
 # Set up a route to receive POST requests at the /commands endpoint

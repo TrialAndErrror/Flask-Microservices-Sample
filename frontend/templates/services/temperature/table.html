@@ -2,6 +2,15 @@
     {% if data|length == 0 %}
         <div class="error-content">
             <h1>No data found!</h1>
+            {% if failed %}
+                <p class="mt-2">
+                    This was caused by an error. Try to refresh the page.
+                    If it still persists, then let Wade know that the frontend
+                    temperature sensor isn't able to connect to the handler service
+                    and he needs to check the temperature container to see what
+                    went wrong.
+                </p>
+            {% endif %}
         </div>
     {% else %}
         <div class="single-table">
