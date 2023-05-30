@@ -1,25 +1,9 @@
-{% extends "base/base.html" %}
+{% extends "services/base/dashboard_split.html" %}
 
-{% block breadcrumbs %}
-    <h1 class="page-title">Temperature Sensor</h1>
-    <ul class="breadcrumb-nav">
-        <li>DevBox</li>
-        <li>Temperature Sensor</li>
-    </ul>
+{% block left_section %}
+    {% include "services/temperature/table.html" %}
 {% endblock %}
 
-
-{% block content %}
-    <div class="contact-us section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-12">
-                    {% include "services/temperature/table.html" %}
-                </div>
-                <div class="col-lg-6 col-12">
-                    {% include "services/temperature/chart.html" %}
-                </div>
-            </div>
-        </div>
-    </div>
+{% block right_section %}
+    {% include "services/temperature/chart.html" %}
 {% endblock %}

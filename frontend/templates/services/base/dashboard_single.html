@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+
+{% block breadcrumbs %}
+    <h1 class="page-title">{{ service_name }}</h1>
+    <ul class="breadcrumb-nav">
+        {% block breadcrumbs_list_items %}
+            <li><a href="{{ url_for("home") }}" aria-label="Toggle navigation">Dev Box</a></li>
+            <li>{{ service_name }}</li>
+        {% endblock %}
+    </ul>
+{% endblock %}
+
+
+{% block content %}
+    <div class="contact-us section">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    {% block whole_section %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

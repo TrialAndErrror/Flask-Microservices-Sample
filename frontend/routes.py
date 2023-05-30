@@ -61,27 +61,48 @@ ImportError: libstdc++.so.6: cannot open shared object file: No such file or dir
 #     abort(405)
 
 
-@app.route("/temperature", methods=['GET', 'POST'])
-def temperature_dashboard():
+def render_template_with_data(template_location: str, service_name: str, human_readable_service_name: str):
     failed = False
+    error_message = ""
 
     try:
-        data = send_message_and_receive_response("temperature")
+        data = send_message_and_receive_response(service_name)
     except requests.exceptions.ConnectionError:
         data = []
         failed = True
+        error_message = f"The frontend {human_readable_service_name} page isn't able to connect to the handler service, " \
+                        f"so check the logs of the '{service_name}' service to see why the request failed."
 
     return render_template(
-        "services/temperature/dashboard.html",
+        template_location,
         data=data,
         chart_file=NO_DATA_CHART_IMAGE,
-        failed=failed
+        failed=failed,
+        error_message=error_message,
+        service_name=human_readable_service_name
     )
 
 
+@app.route("/temperature", methods=['GET', 'POST'])
+def temperature_dashboard():
+    return render_template_with_data(
+        template_location="services/temperature/dashboard.html",
+        service_name="temperature",
+        human_readable_service_name="Temperature Sensor"
+    )
+
+
+@app.route("/feeding", methods=['GET', 'POST'])
+def feeding_calc_dashboard():
+    return render_template_with_data(
+        template_location="services/feeding_calc/dashboard.html",
+        service_name="feeding_calc",
+        human_readable_service_name="Feeding Calculator"
+    )
+
 # Set up a route to receive POST requests at the /commands endpoint
 @app.route('/', methods=['GET', 'POST'])
-def receive_command():
+def home():
     """ Receive command and dispatch accordingly"""
 
     """

@@ -1,0 +1,15 @@
+{% extends "services/base/table.html" %}
+
+{% block header_cols %}
+    <div class="col-3">Volume</div>
+    <div class="col-3">Calories</div>
+    <div class="col-3">Scoops</div>
+    <div class="col-3">mL Water</div>
+{% endblock %}
+
+{% block single_row %}
+    <div class="col-3">{{ entry.total_volume }}</div>
+    <div class="col-3">{{ entry.calories }}</div>
+    <div class="col-3">{{ entry.scoops }}</div>
+    <div class="col-3">{{ entry.water }}</div>
+{% endblock %}

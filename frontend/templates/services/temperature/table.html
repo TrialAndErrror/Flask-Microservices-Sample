@@ -1,38 +1,13 @@
-<div class="col-md-6 col-12 wow fadeInUp" data-wow-delay=".4s">
-    {% if data|length == 0 %}
-        <div class="error-content">
-            <h1>No data found!</h1>
-            {% if failed %}
-                <p class="mt-2">
-                    This was caused by an error. Try to refresh the page.
-                    If it still persists, then let Wade know that the frontend
-                    temperature sensor isn't able to connect to the handler service
-                    and he needs to check the temperature container to see what
-                    went wrong.
-                </p>
-            {% endif %}
-        </div>
-    {% else %}
-        <div class="single-table">
-            <div class="table-head">
-                <div class="row">
-                    <div class="col-6">Time</div>
-                    <div class="col-6">Temperature</div>
-                </div>
-            </div>
-            <div class="table-content">
-                <ul class="table-list">
-                    {% for entry in data %}
-                        <li>
-                            <div class="row">
-                                <div class="col-6">{{ entry.time }}</div>
-                                <div class="col-6">{{ entry.temperature }}</div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
+{% extends "services/base/table.html" %}
 
-            </div>
-        </div>
-    {% endif %}
-</div>
+{% block header_cols %}
+    <div class="col-6">Time</div>
+    <div class="col-6">Temperature</div>
+    <div class="col-6">Humidity</div>
+{% endblock %}
+
+{% block single_row %}
+    <div class="col-4">{{ entry.time }}</div>
+    <div class="col-4">{{ entry.temperature }}</div>
+    <div class="col-4">{{ entry.humidity }}</div>
+{% endblock %}

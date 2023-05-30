@@ -1,0 +1,38 @@
+<div class="col-md-6 col-12 wow fadeInUp" data-wow-delay=".4s">
+    {% if data|length == 0 %}
+        <div class="error-content">
+            <h1>No data found!</h1>
+            {% if failed %}
+                <p class="mt-2">
+                    This was caused by an error. Try to refresh the page.
+                    If it still persists, then let Wade know that:
+                </p>
+                <p>
+                    <b>{{ error_message }}</b>
+                </p>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="single-table">
+            <div class="table-head">
+                <div class="row">
+                    {% block header_cols %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="table-content">
+                <ul class="table-list">
+                    {% for entry in data %}
+                        <li>
+                            <div class="row">
+                                {% block single_row %}
+                                {% endblock %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+    {% endif %}
+</div>

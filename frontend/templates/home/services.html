@@ -5,14 +5,15 @@
     </div>
     <div class="contact-widget-block">
         <h3 class="title">Temperature</h3>
-        <p><a href="/temperature">Go To Data</a></p>
+        <p><a href="{{ url_for("temperature_dashboard") }}">Go To Data</a></p>
+    </div>
+
+    <div class="contact-widget-block">
+        <h3 class="title">Feeding Calculator</h3>
+        <p><a href="{{ url_for("feeding_calc_dashboard") }}">Calculate Measurements</a></p>
     </div>
     <div class="contact-widget-block">
         <h3 class="title">Food and Water</h3>
-        <p><a href="#">Go To Data</a></p>
-    </div>
-    <div class="contact-widget-block">
-        <h3 class="title">Feeding Calculator</h3>
-        <p><a href="#">Calculate Measurements</a></p>
+        <p class="disabled"><a href="#">Currently Unavailable</a></p>
     </div>
 </div>
