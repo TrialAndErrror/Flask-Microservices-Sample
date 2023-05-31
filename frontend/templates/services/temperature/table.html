@@ -6,8 +6,16 @@
     <div class="col-6">Humidity</div>
 {% endblock %}
 
-{% block single_row %}
-    <div class="col-4">{{ entry.time }}</div>
-    <div class="col-4">{{ entry.temperature }}</div>
-    <div class="col-4">{{ entry.humidity }}</div>
+{% block table_data %}
+    <ul class="table-list">
+        {% for entry in data %}
+            <li>
+                <div class="row">
+                    <div class="col-4">{{ entry.time }}</div>
+                    <div class="col-4">{{ entry.temperature }}</div>
+                    <div class="col-4">{{ entry.humidity }}</div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

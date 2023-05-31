@@ -66,13 +66,14 @@ def render_template_with_data(template_location: str, service_name: str, human_r
     error_message = ""
 
     try:
-        data = send_message_and_receive_response(service_name)
+        response = send_message_and_receive_response(service_name)
     except requests.exceptions.ConnectionError:
         data = []
         failed = True
         error_message = f"The frontend {human_readable_service_name} page isn't able to connect to the handler service, " \
                         f"so check the logs of the '{service_name}' service to see why the request failed."
-
+    else:
+        data = response.get_json()
     return render_template(
         template_location,
         data=data,

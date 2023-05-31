@@ -7,9 +7,17 @@
     <div class="col-3">mL Water</div>
 {% endblock %}
 
-{% block single_row %}
-    <div class="col-3">{{ entry.total_volume }}</div>
-    <div class="col-3">{{ entry.calories }}</div>
-    <div class="col-3">{{ entry.scoops }}</div>
-    <div class="col-3">{{ entry.water }}</div>
+{% block table_data %}
+    <ul class="table-list">
+        {% for entry in data %}
+            <li>
+                <div class="row">
+                    <div class="col-3">{{ entry.total_volume }}</div>
+                    <div class="col-3">{{ entry.calories }}</div>
+                    <div class="col-3">{{ entry.scoops }}</div>
+                    <div class="col-3">{{ entry.water }}</div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

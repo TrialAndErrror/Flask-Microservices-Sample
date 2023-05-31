@@ -21,17 +21,8 @@
                 </div>
             </div>
             <div class="table-content">
-                <ul class="table-list">
-                    {% for entry in data %}
-                        <li>
-                            <div class="row">
-                                {% block single_row %}
-                                {% endblock %}
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-
+                {% block table_data %}
+                {% endblock %}
             </div>
         </div>
     {% endif %}

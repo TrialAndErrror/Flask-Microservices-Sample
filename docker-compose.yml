@@ -44,7 +44,7 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
-    command: [ "gunicorn", "--bind", ":8000", "--reload", "frontend.wsgi:app" ]
+    command: [ "gunicorn", "--bind", ":8000", "--reload", "--preload", "frontend.wsgi:app" ]
     ports:
       - "${FRONTEND_PORT}:8000"
     volumes:
