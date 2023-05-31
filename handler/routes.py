@@ -61,10 +61,7 @@ def receive_api_request():
 
             response_data = response.json()
 
-            if response_data.get('success'):
-                return jsonify(response_data)
-            else:
-                return jsonify(response_data)
+            return jsonify(response_data)
 
 
 # Set up a route to receive POST requests at the /commands endpoint

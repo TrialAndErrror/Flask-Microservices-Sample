@@ -1,5 +1,9 @@
-{% extends "services/base/dashboard_single.html" %}
+{% extends "services/base/dashboard_split.html" %}
 
-{% block whole_section %}
+{% block left_section %}
     {% include "services/feeding_calc/table.html" %}
+{% endblock %}
+
+{% block right_section %}
+    {% include "services/feeding_calc/calc_form.html" %}
 {% endblock %}

@@ -38,6 +38,21 @@ def send_message_and_receive_response(data_category, parameters: dict or None = 
     else:
         return jsonify(response_data)
 
+
+def send_feeding_request(calories: float, volume: float):
+    endpoint = f'http://handler:8000/'
+
+    message = {
+            'command': 'feeding_calc',
+            'data': {
+                "calories": calories,
+                "volume": volume
+            }
+        }
+    response = requests.post(url=endpoint, json=message)
+    return response
+
+
 """
 Disabled for errors:
 ImportError: libstdc++.so.6: cannot open shared object file: No such file or directory
@@ -95,11 +110,17 @@ def temperature_dashboard():
 
 @app.route("/feeding", methods=['GET', 'POST'])
 def feeding_calc_dashboard():
+    if request.method == "POST":
+        calories = 0
+        volume = 0
+        response = send_feeding_request(calories, volume)
+
     return render_template_with_data(
         template_location="services/feeding_calc/dashboard.html",
         service_name="feeding_calc",
         human_readable_service_name="Feeding Calculator"
     )
+
 
 # Set up a route to receive POST requests at the /commands endpoint
 @app.route('/', methods=['GET', 'POST'])
