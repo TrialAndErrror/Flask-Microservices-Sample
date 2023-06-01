@@ -5,7 +5,7 @@ services:
     build:
       context: handler
       dockerfile: Dockerfile
-    command: ["gunicorn", "--bind", ":8000", "--reload", "handler.wsgi:app"]
+    command: ["gunicorn", "--bind", ":8000", "--reload", "--preload",  "handler.wsgi:app"]
     depends_on:
       - journal
       - feeding_calc
@@ -17,7 +17,7 @@ services:
     build:
       context: journal
       dockerfile: Dockerfile
-    command: [ "gunicorn", "--bind", ":8000", "--reload", "journal.wsgi:app" ]
+    command: [ "gunicorn", "--bind", ":8000", "--reload", "--preload",  "journal.wsgi:app" ]
     ports:
       - "${JOURNAL_PORT}:8000"
     volumes:
@@ -26,7 +26,7 @@ services:
     build:
       context: feeding_calc
       dockerfile: Dockerfile
-    command: [ "gunicorn", "--bind", ":8000", "--reload", "feeding_calc.wsgi:app" ]
+    command: [ "gunicorn", "--bind", ":8000", "--reload", "--preload",  "feeding_calc.wsgi:app" ]
     ports:
       - "${FEEDING_CALC_PORT}:8000"
     volumes:
@@ -35,7 +35,7 @@ services:
     build:
       context: temperature
       dockerfile: Dockerfile
-    command: [ "gunicorn", "--bind", ":8000", "--reload", "temperature.wsgi:app" ]
+    command: [ "gunicorn", "--bind", ":8000", "--reload", "--preload",  "temperature.wsgi:app" ]
     ports:
       - "${TEMPERATURE_PORT}:8000"
     volumes:

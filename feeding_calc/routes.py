@@ -117,7 +117,6 @@ def receive_command():
                     success=True,
                     message=f"{formula_calc.nutramigen_scoops:.2f} scoops ({formula_calc.nutramigen_grams:.2f}g) of powder required to make {formula_calc.total_volume:.0f} mL of formula @ {formula_calc.calorie_density:.0f} cal"
                 )
-
                 return jsonify(response)
 
             else:
@@ -134,10 +133,10 @@ def api_request():
         json_data = request.get_json()
         # Currently params are unused, returning all data for debug purposes
         parameters = json_data.get('params')
-        return jsonify({
+        return {
             "success": True,
             "data": NutramigenCalculation.query.all()
-        })
+        }, 200
 
 
 def run_app():

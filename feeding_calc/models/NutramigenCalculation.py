@@ -66,10 +66,6 @@ def calculate_scoops(volume, calorie_density):
     """
     adjusted_volume_total = 60 + (7 * custom_scoop_ratio)
 
-
-
-
-
     ratio = Context(prec=4).create_decimal(calorie_density) / Context(prec=4).create_decimal('20')
 
     # Adjust volume to compensate for added volume of powder in formula
