@@ -1,0 +1,19 @@
+```
+
+classDiagram
+    NutramigenCalculation --> feeding_calc
+    NutramigenCalculation: int id
+    NutramigenCalculation: float calorie_density
+    NutramigenCalculation: float total_volume
+    NutramigenCalculation: float nutramigen_scoops
+    NutramigenCalculation: float nutramigen_grams
+    NutramigenCalculation: string volume_water
+    NutramigenCalculation: id
+
+    VolumeRequest --> feeding_calc
+    
+
+    temperature --> handler
+    frontend --> handler
+    user --> frontend
+```

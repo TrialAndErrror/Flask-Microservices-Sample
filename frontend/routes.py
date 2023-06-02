@@ -1,11 +1,9 @@
-import datetime
 import os
 import requests
 from flask import request, render_template, jsonify, abort
-
-from . import app
+from . import app, HANDLER_ENDPOINT
 from flask_htmx import HTMX
-
+import httpx
 
 htmx = HTMX(app)
 
@@ -17,8 +15,6 @@ def send_message_and_receive_response(data_category, parameters: dict or None = 
     if parameters is None:
         parameters = {}
 
-    endpoint = f'http://handler:8000/api'
-
     message_data = {
         "name": data_category,
         "params": parameters
@@ -29,7 +25,7 @@ def send_message_and_receive_response(data_category, parameters: dict or None = 
         data=message_data
     )
 
-    response = requests.post(url=endpoint, json=message)
+    response = httpx.post(f"http://{os.getenv('HANDLER_ENDPOINT')}api", json=message)
 
     response_data = response.json()
 
@@ -39,8 +35,8 @@ def send_message_and_receive_response(data_category, parameters: dict or None = 
         return jsonify(response_data)
 
 
-def send_feeding_request(calories: float, volume: float):
-    endpoint = f'http://handler:8000/'
+def send_feeding_request(calories: int, volume: int):
+    endpoint = f"http://{os.getenv('HANDLER_ENDPOINT')}"
 
     message = {
             'command': 'feeding_calc',
@@ -49,7 +45,7 @@ def send_feeding_request(calories: float, volume: float):
                 "volume": volume
             }
         }
-    response = requests.post(url=endpoint, json=message)
+    response = httpx.post(endpoint, json=message)
     return response
 
 
@@ -88,7 +84,8 @@ def render_template_with_data(template_location: str, service_name: str, human_r
         error_message = f"The frontend {human_readable_service_name} page isn't able to connect to the handler service, " \
                         f"so check the logs of the '{service_name}' service to see why the request failed."
     else:
-        data = response.get_json()
+        data_message = response.get_json()
+        data = data_message.get("data", [])
     return render_template(
         template_location,
         data=data,
@@ -111,8 +108,8 @@ def temperature_dashboard():
 @app.route("/feeding", methods=['GET', 'POST'])
 def feeding_calc_dashboard():
     if request.method == "POST":
-        calories = 0
-        volume = 0
+        calories = int(request.values.get("calories"))
+        volume = int(request.values.get("volume"))
         response = send_feeding_request(calories, volume)
 
     return render_template_with_data(

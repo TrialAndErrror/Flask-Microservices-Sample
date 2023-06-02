@@ -1,5 +1,11 @@
 from logging.config import dictConfig
 from flask import Flask
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
+HANDLER_ENDPOINT = os.getenv("HANDLER_URL", f'http://handler:8000/api')
 
 
 def default_app_factory():

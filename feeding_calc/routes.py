@@ -1,3 +1,5 @@
+from flask_restful import Resource, Api, fields, marshal_with
+
 from flask import request, render_template, jsonify
 
 from dotenv import load_dotenv
@@ -11,6 +13,8 @@ load_dotenv(dotenv_path=".env")
 # Need to import your models before creating database
 with app.app_context():
     db.create_all()
+
+api = Api(app)
 
 
 def save_volume_request(calories, volume):
@@ -101,42 +105,75 @@ def receive_command():
             volume = data['volume']
 
             # Create a new Command object and save it to the database
-            save_request = save_volume_request(
+            save_request_response = save_volume_request(
                 calories=calories,
                 volume=volume
             )
+     
+            if not save_request_response.get('success'):
+                return save_request_response, 400
 
-            if save_request.get('success'):
-                formula_calc = save_calculation(
-                    calorie_density=calories,
-                    total_volume=volume
-                )
-                # calculate volume
+            formula_calc = save_calculation(
+                calorie_density=calories,
+                total_volume=volume
+            )
+            # calculate volume
 
-                response = dict(
-                    success=True,
-                    message=f"{formula_calc.nutramigen_scoops:.2f} scoops ({formula_calc.nutramigen_grams:.2f}g) of powder required to make {formula_calc.total_volume:.0f} mL of formula @ {formula_calc.calorie_density:.0f} cal"
-                )
-                return jsonify(response)
+            calculation_response = dict(
+                success=True,
+                message=f"{formula_calc.nutramigen_scoops:.2f} scoops ({formula_calc.nutramigen_grams:.2f}g) of powder required to make {formula_calc.total_volume:.0f} mL of formula @ {formula_calc.calorie_density:.0f} cal"
+            )
 
-            else:
-                return jsonify(save_request)
+            return calculation_response, 200
 
     volume_requests = VolumeRequest.query.all()
 
     return render_template('requests.html', volume_requests=volume_requests)
 
 
-@app.route('/api', methods=['POST'])
-def api_request():
-    if request.method == 'POST':
+resource_fields = {
+    "id": fields.Integer,
+    "calorie_density": fields.Float,
+    "total_volume": fields.Float,
+    "nutramigen_scoops": fields.Float,
+    "nutramigen_grams": fields.Float,
+    "volume_water": fields.String,
+}
+
+"""
+    id = db.Column(db.Integer, primary_key=True)
+    calorie_density = db.Column(db.Float)
+    total_volume = db.Column(db.Float)
+    nutramigen_scoops = db.Column(db.Numeric(100, 4))
+    nutramigen_grams = db.Column(db.Numeric(100, 4))
+    volume_water = db.Column(db.String(20))
+"""
+
+
+class ApiRequest(Resource):
+    @marshal_with(resource_fields)
+    def post(self):
         json_data = request.get_json()
         # Currently params are unused, returning all data for debug purposes
-        parameters = json_data.get('params')
+        # parameters = json_data.get('params')
         return {
             "success": True,
-            "data": NutramigenCalculation.query.all()
+            "data": list(NutramigenCalculation.query.all())
         }, 200
+
+
+api.add_resource(ApiRequest, "/api")
+
+# @app.route('/api', methods=['POST'])
+# def api_request():
+#     if request.method == 'POST':
+#         json_data = request.get_json()
+#         # Currently params are unused, returning all data for debug purposes
+#         parameters = json_data.get('params')
+#         return {
+#             "success": True,
+#             "data": NutramigenCalculation.query.all()
+#         }, 200
 
 
 def run_app():
