@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-def default_app_factory():
+def feeding_calc_app_factory():
     dictConfig({
         'version': 1,
         'formatters': {'default': {
@@ -28,7 +28,7 @@ def default_app_factory():
     return app
 
 
-app = default_app_factory()
+app = feeding_calc_app_factory()
 
 # Set up a database connection
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/feeding_calc.db'

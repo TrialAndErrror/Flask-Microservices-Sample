@@ -8,7 +8,7 @@ load_dotenv()
 HANDLER_ENDPOINT = os.getenv("HANDLER_URL", f'http://handler:8000/api')
 
 
-def default_app_factory():
+def frontend_app_factory():
     dictConfig({
         'version': 1,
         'formatters': {'default': {
@@ -30,4 +30,4 @@ def default_app_factory():
     return app
 
 
-app = default_app_factory()
+app = frontend_app_factory()

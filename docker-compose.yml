@@ -13,6 +13,7 @@ services:
       - "${HANDLER_PORT}:8000"
     volumes:
       - ./handler:/app/handler
+      - ./config.yml:/path/to/config.yml
   journal:
     build:
       context: journal
@@ -22,6 +23,7 @@ services:
       - "${JOURNAL_PORT}:8000"
     volumes:
       - ./journal:/app/journal
+      - ./config.yml:/path/to/config.yml
   feeding_calc:
     build:
       context: feeding_calc
@@ -31,6 +33,7 @@ services:
       - "${FEEDING_CALC_PORT}:8000"
     volumes:
       - ./feeding_calc:/app/feeding_calc
+      - ./config.yml:/path/to/config.yml
   temperature:
     build:
       context: temperature
@@ -40,6 +43,8 @@ services:
       - "${TEMPERATURE_PORT}:8000"
     volumes:
       - ./temperature:/app/temperature
+      - ./config.yml:/path/to/config.yml
+
   frontend:
     build:
       context: frontend
@@ -49,7 +54,7 @@ services:
       - "${FRONTEND_PORT}:8000"
     volumes:
       - ./frontend:/app/frontend
-
+      - ./config.yml:/path/to/config.yml
 
   #  frontend:
 #    build:
@@ -74,7 +79,7 @@ services:
     ports:
       - 5454:5454
     environment:
-      - POSTGRES_USER=postgres
+      - "${NGINX_PORT}:80"
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=pair
       - POSTGRES_PORT=5454

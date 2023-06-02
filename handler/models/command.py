@@ -6,7 +6,7 @@ from handler import db
 class Command(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     command = db.Column(db.String(200), nullable=False)
-    data = db.Column(db.BLOB, nullable=False)
+    data = db.Column(db.String(1000), nullable=False)
 
     def __init__(self, command, data):
         self.command = command

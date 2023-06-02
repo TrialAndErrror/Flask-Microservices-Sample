@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 
 
-def default_app_factory():
+def journal_app_factory():
     dictConfig({
         'version': 1,
         'formatters': {'default': {
@@ -26,7 +26,7 @@ def default_app_factory():
     return app
 
 
-app = default_app_factory()
+app = journal_app_factory()
 
 # FIXME: This makes little to no sense
 # Set up a database connection

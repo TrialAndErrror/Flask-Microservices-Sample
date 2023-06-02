@@ -36,7 +36,7 @@ def send_message_and_receive_response(data_category, parameters: dict or None = 
 
 
 def send_feeding_request(calories: int, volume: int):
-    endpoint = f"http://{os.getenv('HANDLER_ENDPOINT')}"
+    endpoint = f"http://{os.getenv('HANDLER_ENDPOINT')}/message"
 
     message = {
             'command': 'feeding_calc',

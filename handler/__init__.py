@@ -3,7 +3,7 @@ from logging.config import dictConfig
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 
-def default_app_factory():
+def handler_app_factory():
     dictConfig({
         'version': 1,
         'formatters': {'default': {
@@ -25,7 +25,7 @@ def default_app_factory():
     return app
 
 
-app = default_app_factory()
+app = handler_app_factory()
 
 # Set up a database connection
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/commands.db'

@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 from flask import request, render_template, jsonify
@@ -6,6 +7,13 @@ from handler.models.command import Command
 from . import app, db
 
 
+AUTHORIZED_COMMANDS = [
+    "feeding_calc",
+    "temperature",
+    "journal"
+    "frontend"
+]
+
 # Create the database tables if they don't already exist
 with app.app_context():
     db.create_all()
@@ -13,6 +21,34 @@ with app.app_context():
 
 def send_message_and_receive_response(data, service: str):
     endpoint = f'http://{service}:8000/message'
+    response = requests.post(url=endpoint, json=data)
+
+    response_data = response.json()
+
+    if response_data.get('success'):
+        return jsonify(response_data)
+    else:
+        return jsonify(response_data)
+
+
+@app.route("/message", methods=['GET'])
+def receive_message():
+    # Get the JSON data from the request body
+    json_data = request.get_json()
+
+    # Access the data as a dictionary
+    command = json_data.get('command')
+    data = json_data.get('data')
+
+    # Create a new Command object and save it to the database
+    new_command = Command(command=command, data=json.dumps(data))
+    db.session.add(new_command)
+    db.session.commit()
+
+    if command not in AUTHORIZED_COMMANDS:
+        return {"error": f"Not an installed command ({command}). Please enable the feature and try again."}
+
+    endpoint = f'http://{command}:8000/message'
     response = requests.post(url=endpoint, json=data)
 
     response_data = response.json()
