@@ -6,8 +6,8 @@ Requires=docker.socket
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker compose -f /home/wade/pAIrFlaskProject/docker-compose.yml up --build
-ExecStop=/usr/bin/docker compose -f /home/wade/pAIrFlaskProject/docker-compose.yml down
+ExecStart=/usr/bin/docker compose /home/wade/pAIrFlaskProject/docker-compose.yml up
+ExecStop=/usr/bin/docker compose /home/wade/pAIrFlaskProject/docker-compose.yml down
 
 [Install]
 WantedBy=multiuser.target
