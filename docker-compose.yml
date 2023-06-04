@@ -13,7 +13,7 @@ services:
       - "${HANDLER_PORT}:8000"
     volumes:
       - ./handler:/app/handler
-      - ./config.yml:/path/to/config.yml
+      - ./config.yml:/app/config.yml
   journal:
     build:
       context: journal
@@ -23,7 +23,7 @@ services:
       - "${JOURNAL_PORT}:8000"
     volumes:
       - ./journal:/app/journal
-      - ./config.yml:/path/to/config.yml
+      - ./config.yml:/app/config.yml
   feeding_calc:
     build:
       context: feeding_calc
@@ -33,7 +33,7 @@ services:
       - "${FEEDING_CALC_PORT}:8000"
     volumes:
       - ./feeding_calc:/app/feeding_calc
-      - ./config.yml:/path/to/config.yml
+      - ./config.yml:/app/config.yml
   temperature:
     build:
       context: temperature
@@ -43,8 +43,7 @@ services:
       - "${TEMPERATURE_PORT}:8000"
     volumes:
       - ./temperature:/app/temperature
-      - ./config.yml:/path/to/config.yml
-
+      - ./config.yml:/app/config.yml
   frontend:
     build:
       context: frontend
@@ -54,18 +53,7 @@ services:
       - "${FRONTEND_PORT}:8000"
     volumes:
       - ./frontend:/app/frontend
-      - ./config.yml:/path/to/config.yml
-
-  #  frontend:
-#    build:
-#      context: react-frontend
-#      dockerfile: Dockerfile
-#      args:
-#        VITE_TEMPERATURE_ENDPOINT: "http://${LOCAL_IP}:${TEMPERATURE_PORT}/data"
-#    ports:
-#      - "${FRONTEND_PORT}:3000"
-#    volumes:
-#      - ./react-frontend:/app/react-frontend
+      - ./config.yml:/app/config.yml
   nginx:
     build: ./nginx
     ports:
@@ -85,6 +73,7 @@ services:
       - POSTGRES_PORT=5454
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./nginx/nginx.conf:/app/nginx.conf
 
 volumes:
   postgres_data:
