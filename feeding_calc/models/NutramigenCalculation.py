@@ -40,48 +40,16 @@ def calculate_scoops(volume, calorie_density):
     :param calorie_density:
     :return:
     """
-
-    """
-    Write a formula that calculates the amount of Nutramigen powder and volume of water to mix to make a target volume 
-    and calorie density. One scoop of powder adds 7 mL of total volume. One scoop of powder with 60 mL of water makes a
-    calorie density of 20. 
-    
-    total_volume = volume_of_water +  (7mL * scoops required)
-    
-    Calorie density results from 1 scoop / 60mL at 20 calories; higher calorie densities can be calculated by dividing
-    the target density by 20 and multiplying the ratio by this scoop to volume ratio
-    """
-    calorie_density_ratio = (
-         Context(prec=20).create_decimal(calorie_density)
-         / Context(prec=20).create_decimal('20')
-    )
-
-    """
-    Custom scoop ratio determines how many scoops to mix with 60 mL of water to make formula
-    """
-    custom_scoop_ratio = calorie_density_ratio * STANDARD_SCOOP_RATIO
-
-    """
-    Adjusted volume total is how much volume of mixed formula results from mixing up 60 mL of formula
-    """
-    adjusted_volume_total = 60 + (7 * custom_scoop_ratio)
-
-
-
-
-
     ratio = Context(prec=4).create_decimal(calorie_density) / Context(prec=4).create_decimal('20')
 
     # Adjust volume to compensate for added volume of powder in formula
     adjusted_volume = Context(prec=10).create_decimal(volume) * (Context(prec=10).create_decimal('.9') * ratio)
 
-    volume_of_water = volume - (7 * ratio * volume / 60)
-
     scoops_to_water = ratio / Context(prec=10).create_decimal('60')
 
-    scoops = scoops_to_water * adjusted_volume
+    total_num_scoops = scoops_to_water * adjusted_volume
 
-    grams = Context(prec=10).create_decimal('9') * scoops
+    grams = Context(prec=10).create_decimal('9') * total_num_scoops
 
-    return scoops, grams, adjusted_volume
+    return total_num_scoops, grams, adjusted_volume
 
