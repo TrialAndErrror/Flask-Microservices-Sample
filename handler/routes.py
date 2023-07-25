@@ -10,17 +10,29 @@ from . import app, db
 with app.app_context():
     db.create_all()
 
+ENABLED_COMMANDS = [
+    'feeding_calc',
+    'journal',
+    'temperature'
+]
+
 
 def send_message_and_receive_response(data, service: str):
+    if service not in ENABLED_COMMANDS:
+        return jsonify({"error": f"Service {service} is not enabled."})
+
     endpoint = f'http://{service}:8000/message'
-    response = requests.post(url=endpoint, json=data)
-
-    response_data = response.json()
-
-    if response_data.get('success'):
-        return jsonify(response_data)
+    try:
+        response = requests.post(url=endpoint, json=data)
+    except requests.exceptions.ConnectionError:
+        return jsonify({"error": f"cannot connect to service {service}"})
     else:
-        return jsonify(response_data)
+        response_data = response.json()
+
+        if response_data.get('success'):
+            return jsonify(response_data)
+        else:
+            return jsonify(response_data)
 
 
 # Set up a route to receive POST requests at the /commands endpoint
@@ -57,14 +69,17 @@ def receive_api_request():
 
             endpoint = f'http://{target_service}:8000/api'
 
-            response = requests.post(url=endpoint, json=params)
-
-            response_data = response.json()
-
-            if response_data.get('success'):
-                return jsonify(response_data)
+            try:
+                response = requests.post(url=endpoint, json=params)
+            except requests.exceptions.ConnectionError:
+                return jsonify({"error": f"cannot connect to service {endpoint}"})
             else:
-                return jsonify(response_data)
+                response_data = response.json()
+
+                if response_data.get('success'):
+                    return jsonify(response_data)
+                else:
+                    return jsonify(response_data)
 
 
 # Set up a route to receive POST requests at the /commands endpoint
@@ -92,23 +107,38 @@ def receive_command():
             'name': str
         }
         
+    Temperature Data:
+        {
+            'temperature': float
+            'humidity': str
+        }
+        
 
     """
 
     if request.method == 'POST':
         # Get the JSON data from the request body
-        json_data = request.get_json()
+        json_data = request.get_json(force=True)
 
         # Access the data as a dictionary
-        command = json_data.get('command')
-        data = json_data.get('data')
+        command = json_data.get('command', None)
+        data = json_data.get('data', None)
 
-        # Create a new Command object and save it to the database
-        new_command = Command(command=command, data=data)
-        db.session.add(new_command)
-        db.session.commit()
+        if command is None:
+            return jsonify({"error": "no command provided"})
+        elif data is None:
+            return jsonify({"error": "no data"})
+        else:
+            try:
+                # Create a new Command object and save it to the database
+                new_command = Command(command=command, data=data)
+                db.session.add(new_command)
+                db.session.commit()
 
-        return send_message_and_receive_response(data, command)
+                return send_message_and_receive_response(data, command)
+            except requests.exceptions.ConnectionError:
+                return jsonify({"error": f"cannot connect to service {command}"})
+
     else:
         # Get all commands from the database
         commands = Command.query.all()

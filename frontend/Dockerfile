@@ -8,8 +8,6 @@ RUN pip install -r requirements.txt
 RUN mkdir ./frontend
 COPY . ./frontend
 
-RUN pip install gunicorn
-
 EXPOSE 8000
 
 # FIXME: Remove this if this isn't needed anymore
