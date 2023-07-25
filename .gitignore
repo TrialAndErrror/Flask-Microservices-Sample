@@ -2,3 +2,7 @@
 /.env
 /feeding_calc/.env
 *__pycache__
+
+venv/
+
+config.yml
