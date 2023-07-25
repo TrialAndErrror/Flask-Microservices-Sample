@@ -78,6 +78,8 @@ So we got a 200 status code, but the JSON is saying there's an error. This is be
 the Handler service, but it ran into an error; the "do_something" command is not enabled. Let's look at some of the services
 we can call using this message in the sections below.
 
+_Note: If you get an error saying "requests not found", try installing the `dev-requirements.txt` to your virtual environment using `pip install -r dev-requirements.txt`_
+
 ## Feeding Calculator
 This service helps you to calculate the ratio of powder to water when measuring baby formula. As a first time dad, 
 preparing formula at 3 a.m. was a significant challenge. I built this calculator service to make it easy to just read clear
