@@ -40,16 +40,12 @@ def calculate_scoops(volume, calorie_density):
     :param calorie_density:
     :return:
     """
-    ratio = Context(prec=4).create_decimal(calorie_density) / Context(prec=4).create_decimal('20')
 
-    # Adjust volume to compensate for added volume of powder in formula
-    adjusted_volume = Context(prec=10).create_decimal(volume) * (Context(prec=10).create_decimal('.9') * ratio)
+    calories_per_ml = calorie_density / 30
 
-    scoops_to_water = ratio / Context(prec=10).create_decimal('60')
+    volume_of_water = volume - ((7/45) * volume * calories_per_ml)
+    num_of_scoops = (volume * calories_per_ml) / 45
 
-    total_num_scoops = scoops_to_water * adjusted_volume
+    num_of_grams = 9 * num_of_scoops
 
-    grams = Context(prec=10).create_decimal('9') * total_num_scoops
-
-    return total_num_scoops, grams, adjusted_volume
-
+    return num_of_scoops, num_of_grams, volume_of_water
